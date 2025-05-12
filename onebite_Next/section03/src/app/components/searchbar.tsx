@@ -6,7 +6,7 @@ import style from "./serachbar.module.css";
 
 export default function Searchbar() {
   const router = useRouter();
-  const searchParams = useSearchParams();  //query 
+  const searchParams = useSearchParams();  //비동기 쿼리 
   const [search, setSearch] = useState("");
 
   const q = searchParams.get("q");
@@ -34,9 +34,9 @@ export default function Searchbar() {
   return (
     <div className={style.container}>
       <input
-        value={search}
-        onChange={onChangeSearch}
-        onKeyDown={onKeyDown}
+        value = {search}
+        onChange = {onChangeSearch}
+        onKeyDown = {onKeyDown}
       />
       <button onClick={onSubmit}>검색</button>
     </div>
