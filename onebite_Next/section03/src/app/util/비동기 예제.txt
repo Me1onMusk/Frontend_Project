@@ -1,0 +1,18 @@
+
+
+const promise = new Promise((resolve, reject) => {
+    if(성공조건) resolve("성공 결과");
+    else reject("에러 메시지);
+});
+
+const waitTwoSecond = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("2초 뒤에 실행 완료");
+    }, 2000);
+});
+
+waitTwoSecond.then(result => {
+    console.log(result);
+}).catch(error => {
+    console.error(error); 
+});
