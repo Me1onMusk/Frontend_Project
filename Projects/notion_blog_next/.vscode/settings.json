@@ -1,0 +1,11 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    //파일 저장 시 모든 가능한 문제를 자동으로 수정하는 설정
+    "source.fixAll": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "tabsize": 2,
+  "css.lint.unknownAtRules": "ignore"
+}
