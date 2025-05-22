@@ -2,6 +2,8 @@ import ProfileSection from './_components/ProfileSection';
 import ContactSection from './_components/ContactSection';
 import { PostCard } from '@/components/features/blog/PostCard';
 import Link from 'next/link';
+import Header from '@/components/layouts/Header';
+import Footer from '@/components/layouts/Footer';
 import {
   Select,
   SelectContent,
@@ -11,68 +13,48 @@ import {
 } from '@/components/ui/select';
 import TagSection from './_components/TagSection';
 
+//Mock 데이터
+const mockTags = [
+  { id: 'all', name: '전체', count: 20 },
+  { id: 'html', name: 'HTML', count: 10 },
+  { id: 'css', name: 'CSS', count: 5 },
+  { id: 'javascript', name: 'JavaScript', count: 3 },
+  { id: 'react', name: 'React', count: 3 },
+  { id: 'nextjs', name: 'Next.js', count: 3 },
+];
+
+//Mock 포스트
+const mockPosts = [
+  {
+    id: '1',
+    title: 'Next.js 13으로 블로그 만들기',
+    description: 'Next.js 13과 Notion API를 활용하여 개인 블로그를 만드는 방법을 알아봅니다.',
+    coverImage: 'https://picsum.photos/800/400',
+    tags: [
+      { id: '1', name: 'Next.js', count: 1 },
+      { id: '2', name: 'React', count: 1 },
+    ],
+    authors: '짐코딩',
+    date: '2024-02-01',
+  },
+  {
+    id: '2',
+    title: 'TypeScript 기초 다지기',
+    description: 'TypeScript의 기본 문법과 실전에서 자주 사용되는 패턴들을 살펴봅니다.',
+    coverImage: 'https://picsum.photos/800/401',
+    tags: [
+      { id: '3', name: 'TypeScript', count: 1 },
+      { id: '4', name: 'JavaScript', count: 1 },
+    ],
+    authors: '짐코딩',
+    date: '2024-01-15',
+  },
+];
+
 // 메인 페이지 //
 export default function Home() {
-  //Mock 데이터
-  const mockTags = [
-    { id: 'all', name: '전체', count: 20 },
-    { id: 'html', name: 'HTML', count: 10 },
-    { id: 'css', name: 'CSS', count: 5 },
-    { id: 'javascript', name: 'JavaScript', count: 3 },
-    { id: 'react', name: 'React', count: 3 },
-    { id: 'nextjs', name: 'Next.js', count: 3 },
-  ];
-
-  //Mock 포스트
-  const mockPosts = [
-    {
-      id: '1',
-      title: 'Next.js 13으로 블로그 만들기',
-      description: 'Next.js 13과 Notion API를 활용하여 개인 블로그를 만드는 방법을 알아봅니다.',
-      coverImage: 'https://picsum.photos/800/400',
-      tags: [
-        { id: '1', name: 'Next.js', count: 1 },
-        { id: '2', name: 'React', count: 1 },
-      ],
-      authors: '짐코딩',
-      date: '2024-02-01',
-    },
-    {
-      id: '2',
-      title: 'TypeScript 기초 다지기',
-      description: 'TypeScript의 기본 문법과 실전에서 자주 사용되는 패턴들을 살펴봅니다.',
-      coverImage: 'https://picsum.photos/800/401',
-      tags: [
-        { id: '3', name: 'TypeScript', count: 1 },
-        { id: '4', name: 'JavaScript', count: 1 },
-      ],
-      authors: '짐코딩',
-      date: '2024-01-15',
-    },
-  ];
-
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header 영역 */}
-      <header className="sticky top-0 z-50 border-b">
-        <div className="container flex h-14 items-center">
-          <Link href="/" className="text-xl font-semibold">
-            <span className="font-bold">김태영 기술블로그</span>
-          </Link>
-          <nav className="ml-auto flex items-center gap-4">
-            <Link href="/" className="hover:text-primary font-medium">
-              홈
-            </Link>
-            <Link href="/blog" className="hover:text-primary font-medium">
-              블로그
-            </Link>
-            <Link href="/about" className="hover:text-primary font-medium">
-              소개
-            </Link>
-          </nav>
-        </div>
-      </header>
-
       {/* Main 영역 */}
       <main className="flex-1">
         <div className="container py-8">
@@ -115,15 +97,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
-      {/* Footer 영역 */}
-      <footer className="border-t">
-        <div className="container flex h-14 items-center justify-center">
-          <p className="text-muted-foreground text-sm">
-            Built with Next.js, Tailwind CSS and shadcn/ui
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
