@@ -6,9 +6,14 @@ import { Suspense } from "react";
 import { delay } from "../util/delay";
 import BookListSkeleton from "../components/skeleton/book-list-skeleton";
 
+//1. auto : 기본값, 아무것도 강제하지 않음.
+//2. force-dynamic : 페이지를 강제로 동적 페이지로 설정.
+//3. force-static : 페이지를 강제로 정적 페이지로 설정.
+//4. error : 페이지를 강제로 정적 페이지로 설정 (설정하면 안되는 이유 -> 빌드 오류)
+
 // 모든 책 불러오기 함수 // 
 async function AllBooks() {
-  await delay(1500);
+  await delay(1500);  //1.5초 대기 (테스트)
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`, {cache: "force-cache"});  //book 데이터 불러오기, dynamic 
   if (!response.ok) {return <div>오류가 발생했습니다</div>}
   const allBooks : BookData[] = await response.json();
