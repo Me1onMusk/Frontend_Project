@@ -1,6 +1,9 @@
 
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
+import { ReviewData } from "../../../../types";
+import ReviewItem from "@/app/components/review-item";
+import ReviewEditor from "@/app/components/review-editor";
 
 // 책 데이터 //
 // const mockData = {
@@ -15,18 +18,9 @@ import style from "./page.module.css";
 //     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
 // };
 
-// 정적 파라미터 // 
-export function generateStaticParams () {
-
-}
-
-// 메인 함수 //
-export default async function Page({params}: {params: Promise<{ id: string | string[] }>;}) {
-  
-  // const { id } = await params;
-  // const { title, subTitle, description, author, publisher, coverImgUrl } = mockData;  //구조 분해 할당
-
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${(await params).id}`);
+// 도서 상세 함수 //
+async function BookDetail({bookId}: {bookId: string}) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${bookId}`);
   if(!response.ok) {
     if(response.status === 404) notFound();
     return <div>오류가 발생했습니다</div>
@@ -44,7 +38,7 @@ export default async function Page({params}: {params: Promise<{ id: string | str
   } = book;
 
   return (
-    <div className={style.container}>
+    <section>
       <div
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}>
@@ -56,6 +50,44 @@ export default async function Page({params}: {params: Promise<{ id: string | str
         {author} | {publisher}
       </div>
       <div className={style.description}>{description}</div>
-    </div>
+    </section>
   );
 }
+
+// 리뷰 목록 컴포넌트 //
+async function ReviewList({bookId}: {bookId: string}) {
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/book/${bookId}`);  //백엔드 요청
+
+  if(!response.ok) {
+    throw new Error(`Review 목록을 불러오는데 실패했습니다. ${response.statusText}`);
+  }
+
+  const reviews: ReviewData[] = await response.json();  //백엔드 응답 Json으로 받기 (인터페이스 타입)
+
+  return (
+    <section>
+    {
+      reviews.map((review) => (
+        <ReviewItem key={`review-item-${review.id}`} {...review} />
+      ))
+    }
+    </section>
+  )
+}
+
+// 메인 함수 //
+export default function Page({params}: {params: { id: string }}) {
+  
+  // const { id } = await params;
+  // const { title, subTitle, description, author, publisher, coverImgUrl } = mockData;  //구조 분해 할당
+
+  return (
+    <div className={style.container}>
+      <BookDetail bookId={params.id} />
+      <ReviewEditor bookId={params.id} />
+      <ReviewList bookId={params.id} />
+    </div>
+  )
+}
+

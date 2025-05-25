@@ -13,7 +13,7 @@ import BookListSkeleton from "../components/skeleton/book-list-skeleton";
 
 // 모든 책 불러오기 함수 // 
 async function AllBooks() {
-  await delay(1500);  //1.5초 대기 (테스트)
+  // await delay(1500);  //1.5초 대기 (테스트)
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`, {cache: "force-cache"});  //book 데이터 불러오기, dynamic 
   if (!response.ok) {return <div>오류가 발생했습니다</div>}
   const allBooks : BookData[] = await response.json();
@@ -29,7 +29,7 @@ async function AllBooks() {
 
 // 추천 책 불러오기 함수 //
 async function RecoBooks() {
-  await delay(3000);
+  // await delay(3000);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`, {next: {revalidate: 3}});  //3초후 갱신 
   if(!response.ok) {return <div>오류가 발생했습니다.</div>}
   const recoBooks : BookData[] = await response.json();
