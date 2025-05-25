@@ -1,0 +1,31 @@
+
+[매개변수 구조분해]
+    const user = {
+        name: "Kim",
+        age: 30
+    }
+
+    //구조분해 없이
+    function func1(user: {name: string, age: number}){
+        console.log("안녕, " + user.name);
+    }
+
+    //구조분해 사용용
+    function func2 ({name, age}: {name: string, age: number}) {
+        console.log("안녕, " + name);
+    }
+
+[나머지 받기]
+    const user = {
+        name: 'Kim',
+        age: 30,
+        job: '개발자',
+        country: 'Korea',
+    };
+
+    const { name, ...rest } = user;
+
+    console.log(name);
+        -> Kim
+    console.log(rest); 
+        -> { age: 30, job: '개발자', country: 'Korea' }
