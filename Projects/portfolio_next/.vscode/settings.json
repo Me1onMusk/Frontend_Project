@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2
+}
