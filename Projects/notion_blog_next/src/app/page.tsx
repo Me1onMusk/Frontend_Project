@@ -2,7 +2,7 @@ import ProfileSection from './_components/ProfileSection';
 import ContactSection from './_components/ContactSection';
 import { PostCard } from '@/components/features/blog/PostCard';
 import Link from 'next/link';
-import { getPublishedPosts } from '@/lib/notion';
+import { getPublishedPosts, getTagList } from '@/lib/notion';
 import {
   Select,
   SelectContent,
@@ -13,14 +13,14 @@ import {
 import TagSection from './_components/TagSection';
 
 //Mock 데이터
-const mockTags = [
-  { id: 'all', name: '전체', count: 20 },
-  { id: 'html', name: 'HTML', count: 10 },
-  { id: 'css', name: 'CSS', count: 5 },
-  { id: 'javascript', name: 'JavaScript', count: 3 },
-  { id: 'react', name: 'React', count: 3 },
-  { id: 'nextjs', name: 'Next.js', count: 3 },
-];
+// const mockTags = [
+//   { id: 'all', name: '전체', count: 20 },
+//   { id: 'html', name: 'HTML', count: 10 },
+//   { id: 'css', name: 'CSS', count: 5 },
+//   { id: 'javascript', name: 'JavaScript', count: 3 },
+//   { id: 'react', name: 'React', count: 3 },
+//   { id: 'nextjs', name: 'Next.js', count: 3 },
+// ];
 
 //Mock 포스트
 // const mockPosts = [
@@ -51,8 +51,9 @@ const mockTags = [
 // ];
 
 // 메인 페이지 //
-export default async function Home() {
-  const posts = await getPublishedPosts(); //포스트 가져오기(비동기)
+export default async function Home({ searchParams }: { searchParams: { tag?: string } }) {
+  const [posts, tags] = await Promise.all([getPublishedPosts(searchParams.tag), getTagList()]);
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Main 영역 */}
@@ -61,13 +62,17 @@ export default async function Home() {
           <div className="grid grid-cols-[200px_1fr_220px] gap-6">
             {/* 좌측 사이드바 */}
             <aside>
-              <TagSection tags={mockTags} />
+              <TagSection tags={tags} selectedTag={searchParams.tag} />
             </aside>
 
             <div className="space-y-8">
               {/* 섹션 제목 */}
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold tracking-tight">블로그 목록</h2>
+                <h2 className="text-3xl font-bold tracking-tight">
+                  {searchParams.tag && searchParams.tag !== 'all'
+                    ? `${searchParams.tag} 관련 글`
+                    : '블로그 목록'}
+                </h2>
                 <Select defaultValue="latest">
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="정렬 방식 선택" />
