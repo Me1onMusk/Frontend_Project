@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 // 헤더 컴포넌트 //
@@ -31,7 +33,9 @@ export default function Header() {
           <Link href="/projects">
             <span className="mr-5 hover:text-gray-900">프로젝트</span>
           </Link>
-          <a className="mr-5 hover:text-gray-900">Fourth Link</a>
+          <Link href="/blog">
+            <span className="mr-5 hover:text-gray-900">기술블로그</span>
+          </Link>
         </nav>
         <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
           Button
