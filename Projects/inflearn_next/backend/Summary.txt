@@ -1,0 +1,4 @@
+payload : 실질적인 내용
+
+[JWT - Json Web Token]
+    [Header].[Payload].[Signature]로 구성
