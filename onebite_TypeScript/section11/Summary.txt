@@ -1,0 +1,8 @@
+
+[자바스크립트 -> 타입스크립트 마이그레이션]
+    1. 타입 선언
+    2. tsconfig.json
+    3. 모든 확장자 JS -> JSX
+    4. 개별 하나씩 TSX 
+
+JSX : JavaScript + XML 
