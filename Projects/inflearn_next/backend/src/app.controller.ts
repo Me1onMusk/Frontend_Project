@@ -14,7 +14,7 @@ export class AppController {
   @ApiBearerAuth('access-token') //Swagger 문서에 "이건 토큰 필요함" 이라고 표시됨
   testUser(@Req() req: Request) {
     console.log(req.user); //로그인한 사용자 정보가 담겨 있음
-    return 'test completed';
+    return `유저 이메일: ${req.user?.email}`;
   }
 }
 

@@ -2,3 +2,6 @@ payload : 실질적인 내용
 
 [JWT - Json Web Token]
     [Header].[Payload].[Signature]로 구성
+
+[Docker]
+    애플리케이션을 컨테니어화하여 쉽게 배포하고 실행할 수 있도록 해주는 플랫폼
