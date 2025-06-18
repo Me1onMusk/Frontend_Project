@@ -19,9 +19,8 @@ const menuItems = [
 // 소개 페이지 레이아웃 //
 export default function AboutLayout({ children }: AboutLayoutProps) {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container py-8">
       <div className="flex gap-8">
-
         {/* 사이드바 */}
         <aside className="w-64 shrink-0">
           <nav className="bg-card sticky top-8 space-y-1 rounded-lg border p-4">
@@ -43,9 +42,7 @@ export default function AboutLayout({ children }: AboutLayoutProps) {
         </aside>
 
         {/* 메인 콘텐츠 */}
-        <main className="flex-1">
-            {children}
-        </main>
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   );
