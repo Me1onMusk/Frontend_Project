@@ -10,6 +10,7 @@ import {
 import TagSection from '../app/_components/TagSection';
 import ProfileSection from '../app/_components/ProfileSection';
 import ContactSection from '../app/_components/ContactSection';
+import { getPublishedPosts } from '../../lib/notion';
 
 // Mock 태그 //
 const mockTags = [
@@ -50,7 +51,9 @@ const mockPosts = [
 ];
 
 // 메인 페이지 //
-export default function Home() {
+export default async function Home() {
+  const posts = await getPublishedPosts();
+
   return (
     <div className="container py-8">
       <div className="grid grid-cols-[200px_1fr_220px] gap-6">
@@ -58,7 +61,6 @@ export default function Home() {
         <aside>
           <TagSection tags={mockTags} />
         </aside>
-
         <div className="space-y-8">
           {/* 섹션 제목 */}
           <div className="flex items-center justify-between">
@@ -76,14 +78,13 @@ export default function Home() {
 
           {/* 블로그 카드 그리드 */}
           <div className="grid gap-4">
-            {mockPosts.map((post) => (
-              <Link href={`/blog/${post.id}`} key={post.id}>
+            {posts.map((post) => (
+              <Link href={`/blog/${post.slug}`} key={post.id}>
                 <PostCard post={post} />
               </Link>
             ))}
           </div>
         </div>
-
         {/* 우측 사이드바 */}
         <aside className="flex flex-col gap-6">
           <ProfileSection />

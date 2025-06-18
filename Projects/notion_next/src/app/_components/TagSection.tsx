@@ -1,10 +1,10 @@
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { NotionTag } from '../../../types/notion';
+import { TagFilterItem } from '../../../types/notion';
 import Link from 'next/link';
 
 // 태그목록 인터페이스 //
 interface TagSectionProps {
-  tags: NotionTag[];
+  tags: TagFilterItem[];
 }
 
 // 태그 부분 //
