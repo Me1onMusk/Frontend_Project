@@ -49,39 +49,6 @@ const mockPosts = [
 ];
 
 // 블로그 페이지 //
-export default async function Blog({ searchParams }: BlogProps) {
+export default function Blog() {
   redirect('/');
-
-  const { tag, sort } = await searchParams;
-  const selectedTag = tag || '전체';
-  const selectedSort = sort || 'latest';
-
-  const [posts, tags] = await Promise.all([
-    getPublishedPosts(selectedTag, selectedSort),
-    getTags(),
-  ]);
-
-  return (
-    <div className="container py-8">
-      <div className="grid grid-cols-[200px_1fr_220px] gap-6">
-        {/* 좌측 사이드바 */}
-        <aside>
-          <TagSection tags={tags} selectedTag={selectedTag} />
-        </aside>
-
-        <div className="space-y-8">
-          {/* 섹션 제목 */}
-          <HeaderSection selectedTag={selectedTag} />
-          {/* 블로그 카드 그리드 */}
-          <PostList posts={posts} />
-        </div>
-
-        {/* 우측 사이드바 */}
-        <aside className="flex flex-col gap-6">
-          <ProfileSection />
-          <ContactSection />
-        </aside>
-      </div>
-    </div>
-  );
 }

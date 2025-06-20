@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { PostCard } from '@/components/features/blog/PostCard';
 import { Loader2 } from 'lucide-react';
-import { GetPublishedPostsResponse } from '@/lib/notion';
+import { GetPublishedPostsResponse } from '../../../../lib/notion';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, use } from 'react';
