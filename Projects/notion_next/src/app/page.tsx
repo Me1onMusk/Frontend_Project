@@ -56,9 +56,8 @@ export default async function Home({ searchParams }: HomeProps) {
   const selectedTag = tag || '전체';
   const selectedSort = sort || 'latest';
 
-  const [posts] = await Promise.all([getPublishedPosts(selectedTag, selectedSort), getTags()]);
-
   const tags = getTags();
+  const postsPromise = getPublishedPosts({ tag: selectedTag, sort: selectedSort });
 
   return (
     <div className="container py-8">
@@ -75,7 +74,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <HeaderSection selectedTag={selectedTag} />
           {/* 블로그 카드 그리드 */}
           <Suspense fallback={<div>Loading...</div>}>
-            <PostListSuspense selectedTag={selectedTag} selectedSort={selectedSort} />
+            <PostListSuspense postsPromise={postsPromise} />
           </Suspense>
         </div>
 

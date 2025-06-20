@@ -90,21 +90,21 @@ export const getPostBySlug = async (
   // return getPageMetadata(response);
 };
 
-interface GetPublishedPostsParams {
+export interface GetPublishedPostsParams {
   tag?: string;
   sort?: string;
   pageSize?: number;
   startCursor?: string;
 }
-interface GetPublishedPostsResponse {
+export interface GetPublishedPostsResponse {
   posts: Post[];
   hasMore: boolean;
   nextCursor: string | null;
 }
 
 export const getPublishedPosts = async ({
-  tag,
-  sort,
+  tag = '전체',
+  sort = 'latest',
   pageSize = 2,
   startCursor,
 }: GetPublishedPostsParams = {}): Promise<GetPublishedPostsResponse> => {

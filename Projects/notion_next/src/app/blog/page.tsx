@@ -4,6 +4,7 @@ import ContactSection from '@/app/_components/ContactSection';
 import { getTags, getPublishedPosts } from '../../../lib/notion';
 import HeaderSection from '@/app/_components/HeaderSection';
 import PostList from '@/components/features/blog/PostList';
+import { redirect } from 'next/navigation';
 
 interface BlogProps {
   searchParams: Promise<{ tag?: string; sort?: string }>;
@@ -49,6 +50,8 @@ const mockPosts = [
 
 // 블로그 페이지 //
 export default async function Blog({ searchParams }: BlogProps) {
+  redirect('/');
+
   const { tag, sort } = await searchParams;
   const selectedTag = tag || '전체';
   const selectedSort = sort || 'latest';
