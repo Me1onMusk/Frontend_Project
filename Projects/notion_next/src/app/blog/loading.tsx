@@ -2,8 +2,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Loading() {
   return (
-    <div className="container py-8">
-      <div className="grid grid-cols-[200px_1fr_220px] gap-6">
+    <div className="container py-6 md:py-8 lg:py-12">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[240px_1fr_240px] md:gap-8">
         {/* 좌측 사이드바 스켈레톤 */}
         <aside className="space-y-4">
           <Skeleton className="h-10 w-full" />

@@ -15,6 +15,48 @@ import { compile } from '@mdx-js/mdx';
 import withSlugs from 'rehype-slug';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
+import GiscusComments from '@/components/GiscusComments';
+import { notFound } from 'next/navigation';
+import { getPublishedPosts } from '../../../../lib/notion';
+import { Metadata } from 'next';
+
+// 동적 메타데이터 생성
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { post } = await getPostBySlug(slug);
+
+  if (!post) {
+    return {
+      title: '포스트를 찾을 수 없습니다',
+      description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
+    };
+  }
+
+  return {
+    title: post.title,
+    description: post.description || `${post.title} - 짐코딩 블로그`,
+    keywords: post.tags,
+    authors: [{ name: post.author || '짐코딩' }],
+    publisher: '짐코딩',
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `/blog/${post.slug}`,
+      type: 'article',
+      publishedTime: post.date,
+      modifiedTime: post.modifiedDate,
+      authors: post.author || '짐코딩',
+      tags: post.tags,
+    },
+  };
+}
 
 interface TocEntry {
   value: string;
@@ -111,6 +153,15 @@ const mockTableOfContents: TableOfContentsItem[] = [
   },
 ];
 
+export const generateStaticParams = async () => {
+  const { posts } = await getPublishedPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+};
+
+export const revalidate = 60;
+
 function TableOfContentsLink({ item }: { item: TocEntry }) {
   return (
     <div className="space-y-2">
@@ -137,6 +188,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
 
+  if (!post) {
+    notFound();
+  }
+
   const { data } = await compile(markdown, {
     rehypePlugins: [
       withSlugs,
@@ -149,9 +204,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
   });
 
   return (
-    <div className="container py-12">
-      <div className="grid grid-cols-[240px_1fr_240px] gap-8">
-        <aside>{/* 추후 콘텐츠 추가 */}</aside>
+    <div className="container py-6 md:py-8 lg:py-12">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[240px_1fr_240px] md:gap-8">
+        <aside className="hidden md:block">{/* 추후 콘텐츠 추가 */}</aside>
         <section>
           {/* 블로그 헤더 */}
           <div className="space-y-4">
@@ -159,7 +214,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
               <div className="flex gap-2">
                 {post.tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}
               </div>
-              <h1 className="text-4xl font-bold">{post.title}</h1>
+              <h1 className="text-3xl font-bold md:text-4xl">{post.title}</h1>
             </div>
 
             {/* 메타 정보 */}
@@ -181,6 +236,16 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
           <Separator className="my-8" />
 
+          {/* 모바일 전용 목차 */}
+          <div className="sticky top-[var(--sticky-top)] mb-6 md:hidden">
+            <details className="bg-muted/60 rounded-lg p-4 backdrop-blur-sm">
+              <summary className="cursor-pointer text-lg font-semibold">목차</summary>
+              <nav className="mt-3 space-y-3 text-sm">
+                {data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+              </nav>
+            </details>
+          </div>
+
           {/* 블로그 본문 */}
           <div className="prose prose-neutral prose-sm dark:prose-invert max-w-none">
             <MDXRemote
@@ -197,38 +262,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
           <Separator className="my-16" />
 
           {/* 이전/다음 포스트 네비게이션 */}
-          <nav className="grid grid-cols-2 gap-8">
-            <Link href="/blog/previous-post">
-              <Card className="group hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base font-medium">
-                    <ChevronLeft className="h-4 w-4" />
-                    <span>시작하기</span>
-                  </CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    Next.js를 시작하는 방법부터 프로젝트 구조, 기본 설정까지 상세히 알아봅니다.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-
-            <Link href="/blog/next-post" className="text-right">
-              <Card className="group hover:bg-muted/50 transition-colors">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-end gap-2 text-base font-medium">
-                    <span>심화 가이드</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    Next.js의 고급 기능들을 활용하여 더 나은 웹 애플리케이션을 만드는 방법을
-                    소개합니다.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          </nav>
+          <GiscusComments />
         </section>
-        <aside className="relative">
+
+        <aside className="relative hidden md:block">
           <div className="sticky top-[var(--sticky-top)]">
             <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
               <h3 className="text-lg font-semibold">목차</h3>

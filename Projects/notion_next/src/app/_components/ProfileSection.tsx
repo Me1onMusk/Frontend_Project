@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Youtube, Github, BookOpen, Instagram } from 'lucide-react';
+import { ProfileImage } from '../../components/ProfileImage';
 
 // 소셜링크 목록 //
 const socialLinks = [
@@ -33,13 +34,7 @@ export default function ProfileSection() {
           <div className="flex justify-center">
             <div className="bg-muted rounded-full p-2">
               <div className="h-36 w-36 overflow-hidden rounded-full">
-                <Image
-                  src="/images/profile-light.jpg"
-                  alt="짐코딩"
-                  width={144}
-                  height={144}
-                  className="object-cover"
-                />
+                <ProfileImage />
               </div>
             </div>
           </div>
